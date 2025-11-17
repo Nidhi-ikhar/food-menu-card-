@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Food Junction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background-color: #444;
+      color: white;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    header {
+      padding: 40px 20px;
+      background: #222;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+      animation: slideDown 1s ease;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      letter-spacing: 2px;
+      color: #ffcc70;
+      animation: fadeIn 2s ease;
+    }
+
+    header p {
+      font-size: 1rem;
+      margin-top: 8px;
+      color: #ddd;
+      animation: fadeIn 2.5s ease;
+    }
+
+    nav {
+      background: #333;
+      padding: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      animation: slideUp 1s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #ffcc70;
+      text-decoration: underline;
+      transform: scale(1.1);
+    }
+
+    section {
+      padding: 50px 20px;
+      animation: fadeInSection 1.5s ease;
+    }
+
+    @keyframes fadeInSection {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      color: #ffcc70;
+      font-size: 2rem;
+      margin-bottom: 30px;
+    }
+
+    .menu {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+
+    .dish {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 20px;
+      width: 220px;
+      transition: 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dish:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.05);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    }
+
+    .dish::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: rgba(255, 204, 112, 0.2);
+      transform: skewX(-25deg);
+      transition: 0.5s;
+    }
+
+    .dish:hover::after {
+      left: 200%;
+    }
+
+    .dish img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .dish h3 {
+      margin-bottom: 10px;
+      color: #fff;
+      font-size: 1.2rem;
+    }
+
+    .dish p {
+      font-size: 0.9rem;
+      color: #ddd;
+    }
+
+    footer {
+      background: #222;
+      padding: 20px;
+      color: #aaa;
+      font-size: 0.9rem;
+      margin-top: 50px;
+      animation: fadeIn 2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* ---------- BOOK STYLE MENU ---------- */
+    #menu {
+      perspective: 2000px;
+    }
+
+    .book {
+      width: 80%;
+      height: 300px;
+      margin: 40px auto;
+      position: relative;
+      transform-style: preserve-3d;
+      transform: rotateY(0deg);
+      transition: transform 1s;
+      cursor: pointer;
+    }
+
+    .page {
+      width: 50%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      background: #333;
+      color: white;
+      border: 2px solid #ffcc70;
+      padding: 20px;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.4);
+    }
+
+    .page.left {
+      left: 0;
+      border-right: none;
+      transform-origin: left;
+    }
+
+    .page.right {
+      right: 0;
+      border-left: none;
+      transform-origin: right;
+    }
+
+    .page h3 {
+      color: #ffcc70;
+      margin-bottom: 10px;
+    }
+
+    .page ul {
+      list-style: none;
+    }
+
+    .page li {
+      padding: 5px 0;
+      border-bottom: 1px dashed #777;
+    }
+
+    .book.flipped {
+      transform: rotateY(-180deg);
+    }
+
+    .flip-btn {
+      margin-top: 20px;
+      padding: 10px 25px;
+      background: #ffcc70;
+      border: none;
+      color: black;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .flip-btn:hover {
+      transform: scale(1.05);
+      background: #ffd88f;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      animation: fadeInModal 0.4s ease;
+    }
+
+    @keyframes fadeInModal {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      background: #222;
+      border-radius: 15px;
+      padding: 25px;
+      width: 300px;
+      animation: swipeUp 0.5s ease;
+    }
+
+    @keyframes swipeUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-content img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .close {
+      color: #ffcc70;
+      float: right;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>The Food Junction</h1>
+    <p>“A place where taste meets happiness!”</p>
+  </header>
+
+  <nav>
+    <a href="#indian">Indian Food</a>
+    <a href="#korean">Korean Food</a>
+    <a href="#menu">Menu Prices</a>
+  </nav>
+
+  <section id="indian">
+    <h2>Indian Food</h2>
+    <div class="menu">
+      <div class="dish" data-title="Poha" data-desc="Light, flavorful, and perfect for breakfast — a Maharashtra classic." data-img="poha.jpg">
+        <img src="poha.jpg" alt="Poha">
+        <h3>Poha</h3>
+        <p>Light, flavorful, and perfect for breakfast — a Maharashtra classic.</p>
+      </div>
+      <div class="dish" data-title="Vada Pav" data-desc="The Indian burger — spicy potato fritter in soft bread." data-img="pav.jpg">
+        <img src="pav.jpg" alt="Vada Pav">
+        <h3>Vada Pav</h3>
+        <p>The Indian burger — spicy potato fritter in soft bread.</p>
+      </div>
+      <div class="dish" data-title="Misal Pav" data-desc="A spicy sprout curry served with pav — the soul of Maharashtra." data-img="misal.jpg">
+        <img src="misal.jpg" alt="Misal Pav">
+        <h3>Misal Pav</h3>
+        <p>A spicy sprout curry served with pav — the soul of Maharashtra.</p>
+      </div>
+      <div class="dish" data-title="Thalipith" data-desc="Nutritious flatbread made from multi-grain flour, full of flavor." data-img="thalipith.jpg">
+        <img src="thalipith.jpg" alt="Thalipith">
+        <h3>Thalipith</h3>
+        <p>Nutritious flatbread made from multi-grain flour, full of flavor.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="korean">
+    <h2>Korean Food</h2>
+    <div class="menu">
+      <div class="dish" data-title="Ramen" data-desc="Japanese-style noodle soup with rich broth and savory toppings." data-img="ramen.jpg">
+        <img src="ramen.jpg" alt="Ramen">
+        <h3>Ramen</h3>
+        <p>Japanese-style noodle soup with rich broth and savory toppings.</p>
+      </div>
+      <div class="dish" data-title="Spaghetti" data-desc="Classic Italian noodles cooked with flavorful sauces and herbs." data-img="spaghetti.jpg">
+        <img src="spaghetti.jpg" alt="Spaghetti">
+        <h3>Spaghetti</h3>
+        <p>Classic Italian noodles cooked with flavorful sauces and herbs.</p>
+      </div>
+      <div class="dish" data-title="Toast" data-desc="Crunchy avocado toast with spices and toppings of your choice." data-img="tost.jpg">
+        <img src="tost.jpg" alt="Toast">
+        <h3>Toast</h3>
+        <p>Crunchy avocado toast with spices and toppings of your choice.</p>
+      </div>
+      <div class="dish" data-title="Wrap" data-desc="Soft tortilla filled with veggies and sauces — light and tasty!" data-img="wrap.jpg">
+        <img src="wrap.jpg" alt="Wrap">
+        <h3>Wrap</h3>
+        <p>Soft tortilla filled with veggies and sauces — light and tasty!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOK STYLE MENU -->
+  <section id="menu">
+    <h2>Menu & Prices</h2>
+
+    <div class="book" id="book">
+      <div class="page left">
+        <h3>Indian Food</h3>
+        <ul>
+          <li>Poha — ₹40</li>
+          <li>Vada Pav — ₹30</li>
+          <li>Misal Pav — ₹50</li>
+          <li>Thalipith — ₹70</li>
+        </ul>
+      </div>
+      <div class="page right">
+        <h3>Korean Food</h3>
+        <ul>
+          <li>Ramen — ₹149</li>
+          <li>Spaghetti — ₹159</li>
+          <li>Toast — ₹129</li>
+          <li>Wrap — ₹179</li>
+        </ul>
+      </div>
+    </div>
+
+    <button class="flip-btn" id="flipBtn">Flip Page</button>
+  </section>
+
+  <footer>
+    <p>© 2025 The Food Junction | Designed by Nidhi 🍜</p>
+  </footer>
+
+  <!-- Modal -->
+  <div class="modal" id="dishModal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <img src="" alt="Dish" id="modalImg">
+      <h3 id="modalTitle"></h3>
+      <p id="modalDesc"></p>
+    </div>
+  </div>
+
+  <script>
+    const dishes = document.querySelectorAll('.dish');
+    const modal = document.getElementById('dishModal');
+    const modalImg = document.getElementById('modalImg');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const closeBtn = document.querySelector('.close');
+    const flipBtn = document.getElementById('flipBtn');
+    const book = document.getElementById('book');
+
+    dishes.forEach(dish => {
+      dish.addEventListener('click', () => {
+        modalImg.src = dish.dataset.img;
+        modalTitle.textContent = dish.dataset.title;
+        modalDesc.textContent = dish.dataset.desc;
+        modal.style.display = 'flex';
+      });
+    });
+
+    closeBtn.onclick = () => {
+      modal.style.display = 'none';
+    };
+
+    window.onclick = (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    };
+
+    flipBtn.addEventListener('click', () => {
+      book.classList.toggle('flipped');
+    });
+  </script>
+
+</body>
+</html>
